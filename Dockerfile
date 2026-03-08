@@ -1,16 +1,17 @@
 FROM node:20-alpine
-
 WORKDIR /app
-
-# Install dependencies
-COPY package.json ./
+COPY . .
 RUN npm install --production
-
-# Copy source
-COPY src/ ./src/
-
-# Expose port untuk health check Railway
 EXPOSE 3000
-
-# Start bot
 CMD ["node", "src/index.js"]
+```
+
+**2. Ganti `railway.toml`** — hapus `startCommand`, tambah `dockerfilePath`
+
+**3. Tambah `.dockerignore`** (file baru) dengan isi:
+```
+node_modules
+.env
+*.log
+.DS_Store
+.git
