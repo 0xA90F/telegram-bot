@@ -86,8 +86,8 @@ export async function startAutoDeployer(config = {}) {
       // Cek waktu tersisa - deploy 10 detik sebelum habis untuk antisipasi reaksi
       const timeLeft = round.endTime - Math.floor(Date.now() / 1000);
       if (timeLeft > 15) {
-        // Tunggu sampai 12 detik tersisa
-        scheduleNext((timeLeft - 12) * 1000);
+        // Tunggu sampai 15 detik tersisa
+        scheduleNext((timeLeft - 15) * 1000);
         return;
       }
 
