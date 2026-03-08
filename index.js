@@ -21,6 +21,15 @@ import {
 } from './autoDeploy.js';
 import { startSSE, setSSECallbacks } from './sse.js';
 
+// ─── Health check server (start PERTAMA agar Railway tidak timeout) ──────────
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ status: 'ok', uptime: process.uptime() }));
+}).listen(PORT, '0.0.0.0', () => {
+  console.log(`🌐 Health check server: http://0.0.0.0:${PORT}`);
+});
+
 // ─── Init ───────────────────────────────────────────────────────────────────
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
@@ -30,7 +39,6 @@ if (!TOKEN) {
 }
 
 const bot = new TelegramBot(TOKEN, { polling: true });
-let adminChatId = null; // akan diisi dari /start pertama kali
 
 // Set wallet
 let walletAddress = null;
@@ -331,25 +339,4 @@ bot.on('polling_error', (err) => {
   console.error('Polling error:', err.message);
 });
 
-// ─── Health check server untuk Railway ──────────────────────────────────────
-
-const PORT = process.env.PORT || 3000;
-http.createServer((req, res) => {
-  if (req.url === '/health') {
-    res.writeHead(200);
-    res.end(JSON.stringify({
-      status: 'ok',
-      wallet: walletAddress,
-      autoDeployActive: isAutoDeployActive(),
-      uptime: process.uptime(),
-    }));
-  } else {
-    res.writeHead(200);
-    res.end('🫘 BEAN Bot is running!');
-  }
-}).listen(PORT, () => {
-  console.log(`🌐 Health check server: http://localhost:${PORT}/health`);
-});
-
 console.log('🤖 BEAN Telegram Bot started!');
-console.log(`💼 Wallet: ${walletAddress || 'NOT CONFIGURED'}`);
