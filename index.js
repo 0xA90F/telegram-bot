@@ -39,6 +39,7 @@ if (!TOKEN) {
 }
 
 const bot = new TelegramBot(TOKEN, { polling: true });
+let adminChatId = null; // akan diisi dari /start pertama kali
 
 // Set wallet
 let walletAddress = null;
@@ -338,5 +339,6 @@ bot.onText(/\/autostatus/, (msg) => {
 bot.on('polling_error', (err) => {
   console.error('Polling error:', err.message);
 });
+
 
 console.log('🤖 BEAN Telegram Bot started!');

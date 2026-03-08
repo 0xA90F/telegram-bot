@@ -2,11 +2,11 @@
   "name": "bean-telegram-bot",
   "version": "1.0.0",
   "description": "Telegram bot for BEAN game on Base mainnet",
-  "main": "src/index.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
+    "start": "node index.js",
+    "dev": "node --watch index.js"
   },
   "dependencies": {
     "node-telegram-bot-api": "^0.66.0",
